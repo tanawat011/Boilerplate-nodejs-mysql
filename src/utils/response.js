@@ -1,44 +1,56 @@
 import {
   responseStatusCodeSuccess,
   responseStatusCodeCreated,
-  responseStatusCodeNoContent,
   responseStatusCodeBadRequest,
   responseStatusCodeNotFound,
   responseStatusCodeInterServerError
 } from '../constants'
 
-export default (err, res, data) => {
-  switch (err.code) {
-    case responseStatusCodeCreated:
-      res.status(responseStatusCodeCreated).send(data)
-      break
-    case responseStatusCodeNoContent:
-      res.status(responseStatusCodeNoContent).send()
-      break
-    case responseStatusCodeBadRequest:
-      res.status(responseStatusCodeBadRequest).send({
-        is_error: true,
-        status: 'Bad Request',
-        message: ''
-      })
-      break
-    case responseStatusCodeNotFound:
-      res.status(responseStatusCodeNotFound).send({
-        is_error: true,
-        status: 'Not Found',
-        message: ''
-      })
-      break
-    case responseStatusCodeInterServerError:
-      res.status(responseStatusCodeInterServerError).json({
-        is_error: true,
-        status: 'Internal Service Error',
-        message: err
-      })
-      break
-    default:
-      res.status(responseStatusCodeSuccess).send(data)
-      break
+export const responseSuccess = (res, data, msg) => {
+    res.status(responseStatusCodeSuccess).send({
+      data,
+      is_error: false,
+      status: 'Success',
+      message: msg || 'Response success'
+    })
+  },
+  responseCreated = (res, data, msg) => {
+    res.status(responseStatusCodeCreated).send({
+      data,
+      is_error: false,
+      status: 'Created',
+      message: msg || 'Created done'
+    })
+  },
+  responseDataNotFound = (res, data, msg) => {
+    res.status(responseStatusCodeSuccess).send({
+      data,
+      is_error: false,
+      status: 'Not Found',
+      message: msg || 'Data not found'
+    })
+  },
+  responseBadRequest = (err, res) => {
+    res.status(responseStatusCodeBadRequest).send({
+      data: undefined,
+      is_error: true,
+      status: 'Bad Request',
+      message: (err ? err : err.message) || 'Bad Request'
+    })
+  },
+  responseUrlNotFound = (err, res) => {
+    res.status(responseStatusCodeNotFound).send({
+      data: undefined,
+      is_error: true,
+      status: 'Url Not Found',
+      message: (err ? err : err.message) || 'Url not found'
+    })
+  },
+  responseInternalServerError = (err, res) => {
+    res.status(responseStatusCodeInterServerError).send({
+      data: undefined,
+      is_error: true,
+      status: 'Internal Server Error',
+      message: (err ? err : err.message) || 'Internal server errror'
+    })
   }
-  return
-}

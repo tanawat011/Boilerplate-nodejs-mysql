@@ -8,7 +8,7 @@ const connection = mysql.createConnection({
   database: global.env.db_name,
   port: global.env.db_port,
   debug:
-    global.env.db_debug === 'true' ? ['ComQueryPacket', 'RowDataPacket'] : false
+    global.env.db_debug ? ['ComQueryPacket', 'RowDataPacket'] : false
 })
 
 // connection.connect(error => {

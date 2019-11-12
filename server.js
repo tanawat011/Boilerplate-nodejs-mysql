@@ -4,7 +4,7 @@ import bodyParser from 'body-parser'
 // Middleware
 import Middleware from './src/middleware'
 // Utils
-import responseHandle from './src/utils/response'
+import { responseUrlNotFound } from './src/utils/response'
 // Features
 import FeatureCustomer from './src/features/customer'
 
@@ -28,14 +28,12 @@ app.get('/', (req, res) => {
 //Features
 FeatureCustomer(app)
 
-// Handle error page not found
+// Handle error url not found
 app.use((req, res) => {
-  responseHandle({ code: 404 }, res, null)
+  responseUrlNotFound(`Url: ${req.protocol}://${req.get('host')}${req.originalUrl} not found.`, res)
 })
 
 const port = global.env.port || 3000
 app.listen(port, () => {
-  console.log(`(${global.env.NODE_ENV}) Server is running on port ${port}.`)
-
-  
+  console.log('\x1b[36m', `(${global.env.NODE_ENV}) Server is running on port ${port}.\n`)
 })

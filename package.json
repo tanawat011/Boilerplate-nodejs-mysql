@@ -1,7 +1,7 @@
 {
-    "name": "my-project-api-node",
+    "name": "api-node-es6-express-mysql",
     "version": "1.0.0",
-    "description": "Node.js Restful CRUD API with Node.js, Express and MySQL",
+    "description": "Node.js Restful API with Javascript ES6, Express and MySQL",
     "main": "server.js",
     "scripts": {
         "serve": "node server.js",

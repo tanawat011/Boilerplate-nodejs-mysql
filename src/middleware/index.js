@@ -1,5 +1,5 @@
 const LoggerMiddleware = (req, res, next) => {
-  console.log(`Logged  ${req.url}  ${req.method} -- ${new Date()}`)
+  console.log('\x1b[36m%s\x1b[0m', `Logged  ${req.url}  ${req.method} -- ${new Date()}`)
   next()
 }
 

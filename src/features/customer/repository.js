@@ -1,88 +1,32 @@
-import sql from '../../../config/db.config'
 import { tableCustomer } from '../../constants'
+import { query } from '../../utils'
 
-export const create = (newCustomer, result) => {
-  const queryStr = `INSERT INTO ${tableCustomer} SET ?`
-  sql.query(queryStr, newCustomer, (err, res) => {
-    if (err) {
-      result(err, null)
-      return
-    }
-    result(null, { id: res.insertId, ...newCustomer })
-  })
+export const create = body => {
+  const q = `INSERT INTO ${tableCustomer} SET ?`
+  return query(q, body)
 }
 
-export const getById = (customerId, result) => {
-  const queryStr = `SELECT * FROM ${tableCustomer} WHERE id = ${customerId}`
-  sql.query(queryStr, (err, res) => {
-    if (err) {
-      result(err, null)
-      return
-    }
-
-    if (res.length) {
-      result(null, res[0])
-      return
-    }
-
-    result({ kind: 'not_found' }, null)
-  })
+export const getById = id => {
+  const q = `SELECT * FROM ${tableCustomer} WHERE id = ${id}`
+  return query(q)
 }
 
-export const getAll = result => {
-  const queryStr = `SELECT * FROM ${tableCustomer}`
-  sql.query(queryStr, (err, res) => {
-    if (err) {
-      result(err, null)
-      return
-    }
-    result(null, res)
-  })
+export const getAll = () => {
+  const q = `SELECT * FROM ${tableCustomer}`
+  return query(q)
 }
 
-export const updateById = (id, customer, result) => {
-  const queryStr = `UPDATE ${tableCustomer} SET email = ?, name = ?, active = ? WHERE id = ?`
-  sql.query(
-    queryStr,
-    [customer.email, customer.name, customer.active, id],
-    (err, res) => {
-      if (err) {
-        result(err, null)
-        return
-      }
-
-      if (res.affectedRows == 0) {
-        result({ kind: 'not_found' }, null)
-        return
-      }
-      result(null, { id: id, ...customer })
-    }
-  )
+export const updateById = (id, body) => {
+  const q = `UPDATE ${tableCustomer} SET email = ?, name = ?, active = ? WHERE id = ?`
+  return query(q, [body.email, body.name, body.active, id])
 }
 
-export const deleted = (id, result) => {
-  const queryStr = `DELETE FROM ${tableCustomer} WHERE id = ?`
-  sql.query(queryStr, id, (err, res) => {
-    if (err) {
-      result(err, null)
-      return
-    }
-
-    if (res.affectedRows == 0) {
-      result({ kind: 'not_found' }, null)
-      return
-    }
-    result(null, res)
-  })
+export const deleted = (id,) => {
+  const q = `DELETE FROM ${tableCustomer} WHERE id = ?`
+  return query(q, id)
 }
 
-export const deletedAll = result => {
-  const queryStr = `DELETE FROM ${tableCustomer}`
-  sql.query(queryStr, (err, res) => {
-    if (err) {
-      result(err, null)
-      return
-    }
-    result(null, res)
-  })
+export const deletedAll = () => {
+  const q = `DELETE FROM ${tableCustomer}`
+  return query(q)
 }
